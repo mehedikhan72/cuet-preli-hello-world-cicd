@@ -5,10 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: fastapi-hello-world
     ports:
       - "8000:8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://fastapi-app:8000/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -17,27 +18,6 @@ services:
     networks:
       - cicd-network
 
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile.jenkins
-    user: root
-    privileged: true
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock   # give access to host Docker
-    environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
-    restart: unless-stopped
-    networks:
-      - cicd-network
-
-volumes:
-  jenkins_home:
-
 networks:
   cicd-network:
-    driver: bridge
+    external: true
