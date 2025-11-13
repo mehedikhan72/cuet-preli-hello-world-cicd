@@ -10,14 +10,18 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo '=========================================='
-                echo 'Stage: Checkout'
-                echo '=========================================='
-                checkout scm
-                sh 'ls -la'
+                sh '''
+                    echo 'Cloning repo...'
+                    if [ ! -d ".git" ]; then
+                        git clone https://github.com/mehedikhan72/cuet-preli-hello-world-cicd.git .
+                    else
+                        git pull origin master
+                    fi
+                    ls -la
+                '''
             }
         }
-        
+                
         stage('Build') {
             steps {
                 echo '=========================================='
