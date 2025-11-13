@@ -73,13 +73,13 @@ pipeline {
                 script {
                     echo 'Stopping and removing existing containers...'
                     sh """
-                        docker-compose down || true
+                        docker compose down || true
                         docker rm -f ${CONTAINER_NAME} || true
                     """
                     
                     echo 'Deploying application with Docker Compose...'
                     sh """
-                        docker-compose up -d
+                        docker compose up -d
                     """
                     
                     echo 'Waiting for container to start...'
